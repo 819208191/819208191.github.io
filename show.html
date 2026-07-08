@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XXAI 平台全套使用教程</title>
+    <style>
+        /* --- 核心变量与复位 --- */
+        :root {
+            --bg-main: #f8fafc;
+            --bg-content: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --primary-border: #dbeafe;
+            --warning-bg: #fef3c7;
+            --warning-border: #f59e0b;
+            --warning-text: #92400e;
+            --code-bg: #1e293b;
+            --code-text: #f8fafc;
+            --border-color: #e2e8f0;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- 顶部导航栏 --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .logo-title {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-version {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--border-color);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        /* --- 移动端目录切换按钮 --- */
+        .menu-toggle {
+            display: none;
+            background: var(--primary-light);
+            border: 1px solid var(--primary-border);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* --- 主体双栏布局 --- */
+        .container {
+            display: flex;
+            flex: 1;
+            margin-top: 64px;
+            position: relative;
+        }
+
+        /* 侧边栏目录 */
+        aside {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 64px;
+            bottom: 0;
+            left: 0;
+            background: var(--bg-content);
+            border-right: 1px solid var(--border-color);
+            padding: 32px 16px;
+            overflow-y: auto;
+            z-index: 90;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            padding-left: 12px;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item a {
+            display: block;
+            padding: 10px 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+        }
+
+        .nav-item.active a {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* 主内容区 */
+        main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            background-color: var(--bg-content);
+            padding: 40px 48px;
+            max-width: 1000px;
+        }
+
+        /* --- 文章排版样式 --- */
+        section {
+            scroll-margin-top: 84px;
+            margin-bottom: 56px;
+        }
+
+        section:not(:last-of-type) {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 24px 0 12px 0;
+            color: #1e293b;
+        }
+
+        p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 16px;
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* 关键参数高亮 */
+        .highlight {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid var(--primary-border);
+            word-break: break-all;
+        }
+
+        /* 链接样式 */
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            font-weight: 500;
+        }
+
+        .link:hover {
+            border-color: var(--primary);
+        }
+
+        /* --- 提示框组件 --- */
+        .info-box, .warning-box {
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14.5px;
+            line-height: 1.5;
+        }
+
+        .info-box {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            color: #1e40af;
+        }
+
+        .warning-box {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            color: var(--warning-text);
+        }
+
+        /* --- 代码块及复制组件 --- */
+        .code-container {
+            position: relative;
+            margin: 16px 0;
+            background-color: var(--code-bg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #0f172a;
+            border-bottom: 1px solid #334155;
+        }
+
+        .code-lang {
+            font-size: 12px;
+            color: #94a3b8;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+
+        .copy-btn {
+            background: #334155;
+            border: none;
+            color: #cbd5e1;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .copy-btn:hover {
+            background: #475569;
+            color: #ffffff;
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+            color: white;
+        }
+
+        pre {
+            padding: 16px;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 14px;
+            color: var(--code-text);
+            line-height: 1.5;
+            display: block;
+        }
+
+        /* --- 全局 Toast 提示 --- */
+        .toast {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* --- 页脚 --- */
+        footer {
+            background-color: var(--bg-main);
+            border-top: 1px solid var(--border-color);
+            padding: 32px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            margin-bottom: 8px;
+        }
+
+        /* --- 响应式媒体查询 --- */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            aside {
+                transform: translateX(-100%);
+                width: 100%;
+                top: 64px;
+                height: calc(100vh - 64px);
+            }
+
+            aside.open {
+                transform: translateX(0);
+            }
+
+            main {
+                margin-left: 0;
+                padding: 24px 16px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-dot"></div>
+            <h1 class="logo-title">XXAI 综合 AI 服务使用文档</h1>
+        </div>
+        <button class="menu-toggle" id="menuToggle">展开目录</button>
+        <span class="nav-version">v2026.07</span>
+    </header>
+
+    <div class="container">
+        <aside id="sidebar">
+            <div class="sidebar-title">导航目录</div>
+            <ul class="nav-list">
+                <li class="nav-item active"><a href="#section-1">一、平台业务总览</a></li>
+                <li class="nav-item"><a href="#section-2">二、注册与充值流程</a></li>
+                <li class="nav-item"><a href="#section-3">三、网页拼车套餐使用教程</a></li>
+                <li class="nav-item"><a href="#section-4">四、NewAPI 上游对接教程</a></li>
+                <li class="nav-item"><a href="#section-5">五、龙虾 LangBot 一键部署</a></li>
+                <li class="nav-item"><a href="#section-6">六、包月套餐限流规则说明</a></li>
+                <li class="nav-item"><a href="#section-7">七、常见报错故障排查</a></li>
+                <li class="nav-item"><a href="#section-8">八、使用须知 & 售后说明</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <section id="section-1">
+                <h2>一、平台业务总览</h2>
+                
+                <h3>业务 1：GPT Plus/Pro 网页拼车服务</h3>
+                <p><strong>适用人群：</strong>学生、办公、科研轻量聊天</p>
+                <p><strong>号池说明：</strong>自建 Team/Plus/Pro 订阅账号池，账号隔离轮换风控，低封号风险。</p>
+                <div class="warning-box">
+                    <strong>20 元包月规则限制：</strong>GPT5.4 不限对话，GPT5.5 每日 30 次，单次输出上限 1500 字。每日晚间 20-24 点为访问高峰期，可能会触发限流排队。
+                </div>
+                <div class="warning-box">
+                    <strong>违规规则：</strong>严禁利用本通道运行爬虫或进行批量文本生成。一经检测违规，直接关停套餐且不予退款。
+                </div>
+
+                <h3>业务 2：Token 中转 API 服务（开发 / 企业主力）</h3>
+                <p><strong>双渠道货源：</strong>自建订阅逆向 API + <span class="highlight">Namax</span> 上游官方 API，模型全面支持 <span class="highlight">gpt-5.4</span> 和 <span class="highlight">gpt-5.5</span>。</p>
+                <p><strong>三档分组：</strong>低价测试池（限流）、标准商用池、企业专线池。</p>
+                <p><strong>优势：</strong>国内环境直连无需魔法，无缝兼容 NewAPI、Cursor、CherryStudio 等主流商用及开源开发工具。</p>
+                <p><strong>功能特色：</strong>支持独立用户令牌分发、自定义日/月 Token 限额、输入与输出分开独立计费。大客户及代理商可享受阶梯折扣。</p>
+
+                <h3>业务 3：LangBot 龙虾一站式部署服务</h3>
+                <p><strong>服务包含：</strong>包含服务器基础环境配置、Docker 环境安装、源码编译部署、域名 HTTPS 证书申请、对接本站 Token 渠道以及限流规则配置。</p>
+                <p><strong>适用场景：</strong>搭建个人私有 AI 站点、工作室内部业务机器人。</p>
+                <p><strong>售后保障：</strong>附赠独家运维教程，并提供基础技术问题长期答疑服务。</p>
+            </section>
+
+            <section id="section-2">
+                <h2>二、注册与充值流程</h2>
+                <ul>
+                    <li><strong>官网注册：</strong>访问官网注册账号，仅需提供手机号即可完成接收验证。</li>
+                    <li><strong>充值档位：</strong>支持 <span class="highlight">10元</span> / <span class="highlight">30元</span> / <span class="highlight">50元</span> / <span class="highlight">100元</span> 固定面额充值。</li>
+                    <li><strong>推广福利：</strong>成功邀请好友充值，可获得其充值金额 <span class="highlight">20%</span> 的现金返利。</li>
+                    <li><strong>支付方式：</strong>集成微信 / 支付宝免签扫码支付，付款成功后系统自动到账余额。</li>
+                </ul>
+                <div class="info-box">
+                    <strong>到账异常处理：</strong>若因网络波动导致延迟，请截图留存您的订单支付凭证，直接私聊管理员进行人工核对与手动补发。
+                </div>
+            </section>
+
+            <section id="section-3">
+                <h2>三、网页拼车套餐使用教程</h2>
+                <p>账号充值完毕后，在后台购买对应的包月套餐，系统将自动开通网页对话入口。</p>
+                <p><strong>额度刷新规则：</strong>每日 <span class="highlight">0 点</span> 准时重置 GPT5.5 的当日对话次数。</p>
+                <div class="warning-box">
+                    <strong>注意：</strong>高峰期排队、响应延迟属于正常的低价通道现象。重度使用和追求极速响应的用户，强烈建议切换至 API 按量付费服务。
+                </div>
+            </section>
+
+            <section id="section-4">
+                <h2>四、NewAPI 上游对接教程（Namax 渠道）</h2>
+                <p>如需使用 NewAPI 进行上游对接，请严格使用以下固定参数：</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">API URL</span>
+                        <button class="copy-btn" onclick="copyText('https://api.namax.ai/v1', this)">一键复制</button>
+                    </div>
+                    <pre><code>https://api.namax.ai/v1</code></pre>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">Support Models</span>
+                        <button class="copy-btn" onclick="copyText('gpt-5.4,gpt-5.5', this)">一键复制</button>
+                    </div>
+                    <pre><code>gpt-5.4, gpt-5.5</code></pre>
+                </div>
+
+                <h3>后台具体操作步骤：</h3>
+                <ol>
+                    <li>登录 NewAPI 后台，依次点击 <span class="highlight">渠道管理</span> → <span class="highlight">新增渠道</span>。</li>
+                    <li>在类型下拉菜单中选择 <span class="highlight">OpenAI</span>。</li>
+                    <li>在对应的接口地址栏填入上游地址 <span class="highlight">https://api.namax.ai/v1</span>，并正确填入您的上游密钥。</li>
+                    <li>在模型列表框中填入或勾选上述支持的模型，最后点击 <span class="highlight">测试连通性</span>。</li>
+                </ol>
+
+                <p><strong>渠道绑定分组：</strong>建议将特价、商用、企业分组分开建立渠道绑定，以便灵活设置倍率控制分销成本。</p>
+                <p><strong>令牌创建：</strong>在后台令牌页面新建令牌，将其绑定至对应的用户分组，并自定义并发数与每日 Token 消耗限额。</p>
+
+                <div class="info-box">
+                    <strong>核心概念区分：</strong>上游 <span class="highlight">Namax 密钥</span> 是您在平台内部的进货凭证；而<span class="highlight">用户令牌</span>则是您对外分发给最终用户或应用调用的密钥。两者相互隔离，请勿混淆。
+                </div>
+            </section>
+
+            <section id="section-5">
+                <h2>五、龙虾 LangBot 服务器一键部署教程</h2>
+                <p><strong>前置条件：</strong>准备一台 Linux 云服务器，并在安全组/防火墙中开放 <span class="highlight">80</span>、<span class="highlight">443</span> 以及 <span class="highlight">3000</span> 端口。</p>
+                
+                <p>请复制以下完整一键部署命令在您的服务器终端中运行：</p>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">bash</span>
+                        <button class="copy-btn" onclick="copyText('apt update && apt upgrade -y\ncurl -fsSL https://get.docker.com | bash\nsystemctl enable docker && systemctl start docker\ndocker run -d --name langbot --restart always -p 3000:3000 -v /data/langbot:/data xxxx/langbot:latest', this)">一键复制</button>
+                    </div>
+                    <pre><code>apt update && apt upgrade -y
+curl -fsSL https://get.docker.com | bash
+systemctl enable docker && systemctl start docker
+docker run -d --name langbot --restart always -p 3000:3000 -v /data/langbot:/data xxxx/langbot:latest</code></pre>
+                </div>
+
+                <p>部署完成后，在浏览器中访问 <span class="highlight">服务器IP:3000</span> 即可登录管理后台。</p>
+                <p><strong>渠道配置：</strong>进入后台配置，填入本站的 NewAPI 域名以及您的个人用户令牌，并合理设置对话限流，避免额度出现意外超额消耗。</p>
+            </section>
+
+            <section id="section-6">
+                <h2>六、包月套餐限流规则说明</h2>
+                <div class="warning-box">
+                    <strong>20元月卡硬性限制：</strong>GPT5.5 每日调用上限为 30 次，单次上下文输出 1500 字封顶。
+                </div>
+                <p><strong>额度耗尽处理：</strong>若包月额度耗尽，可在后台直接充值切换为按量计费调用，或一键升级至更高阶的商用包月套餐。</p>
+                <p><strong>使用场景限制：</strong>此通道严禁用于任何批量脚本、网络爬虫等高并发、高消耗场景。</p>
+            </section>
+
+            <section id="section-7">
+                <h2>七、常见报错故障排查</h2>
+                <ul>
+                    <li><strong>401 无权限 (Unauthorized)：</strong>请检查令牌是否复制完整、账号可用余额是否不足、或该令牌因违规已被系统自动封禁。</li>
+                    <li><strong>404 接口错误 (Not Found)：</strong>通常原因为配置的 BaseURL 格式不规范，请确保末尾带有 <span class="highlight">/v1</span>。</li>
+                    <li><strong>429 限流 (Too Many Requests)：</strong>代表当日调用次数或 Token 额度已耗尽，或正处于晚间高峰期通道限流排队状态。</li>
+                    <li><strong>调用超时 (Timeout)：</strong>低价测试通道受网络波动影响较大，如对稳定性有高要求，请直接切换至标准商用分组重试。</li>
+                    <li><strong>充值未到账：</strong>偶发性收款挂机软件离线。请不要惊慌，直接向客服提供您的商户订单号，等待人工核对补发。</li>
+                </ul>
+            </section>
+
+            <section id="section-8">
+                <h2>八、使用须知 & 售后</h2>
+                <p>任何操作问题请<strong>优先自主查阅本文档</strong>，本平台属于自助式中转服务，不提供一对一手把手教学。</p>
+                <p>低价通道客观存在网络波动，追求绝对稳定体验的生产环境请务必选用<strong>商用分组</strong>。平台全业务支持无理由退款。</p>
+                <p>如遇故障可私聊管理员，消息看到必回。由于咨询高峰期回复较慢，请一次性留言阐述清楚您的问题及订单号。</p>
+                
+                <div class="warning-box">
+                    <strong>群规与账号红线：</strong>全群禁止竞品引流、禁止倒卖平台密钥、禁止高频刷量爬虫、禁止违规内容非法生成。一经发现违规，永久封禁账号，不予结算余额。
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="toast" id="toast">复制成功</div>
+
+    <footer>
+        <div class="footer-links">
+            文档托管地址：内网本地托管及平台公告栏
+        </div>
+        <div>最新更新时间提示：2026年7月</div>
+    </footer>
+
+    <script>
+        // 一键复制功能与精致 Toast
+        function copyText(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                // 按钮状态反馈
+                const originalText = button.innerText;
+                button.innerText = '✓ 已复制';
+                button.classList.add('copied');
+                
+                // Toast 弹窗提示
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+
+                setTimeout(() => {
+                    button.innerText = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败: ', err);
+            });
+        }
+
+        // 移动端侧边栏切换
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            if (sidebar.classList.contains('open')) {
+                menuToggle.innerText = '关闭目录';
+            } else {
+                menuToggle.innerText = '展开目录';
+            }
+        });
+
+        // 点击侧边栏菜单后，移动端自动收起
+        const navLinks = document.querySelectorAll('.nav-item a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    menuToggle.innerText = '展开目录';
+                }
+            });
+        });
+
+        // 滚动侦测：侧边栏高亮随页面滚动自动切换
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                // 触发线设置为视口上方 100px 处
+                if (pageYOffset >= (sectionTop - 120)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const href = item.querySelector('a').getAttribute('href').substring(1);
+                if (href === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
