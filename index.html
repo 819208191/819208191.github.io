@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MaSiKe-ai 详细操作手册 | Next-Gen AI Hub</title>
+    <title>MaSiKe-ai | 使用操作手册</title>
     <style>
-        /* --- 核心变量：暗黑科技风 --- */
         :root {
-            --bg-base: #050505;
-            --bg-panel: rgba(18, 18, 24, 0.85);
-            --text-main: #e2e8f0;
-            --text-muted: #8b949e;
-            --primary: #00f0ff; /* 霓虹青 */
-            --secondary: #7000ff; /* 霓虹紫 */
-            --accent: #ff0055; /* 霓虹红 */
-            --border-light: rgba(255, 255, 255, 0.1);
-            --border-highlight: rgba(0, 240, 255, 0.4);
-            --glow-primary: 0 0 15px rgba(0, 240, 255, 0.3);
-            --sidebar-width: 260px;
+            --bg-deep: #09090b;
+            --glass-bg: rgba(24, 24, 27, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-glow-1: #3b82f6;
+            --accent-glow-2: #8b5cf6;
+            --accent-glow-3: #06b6d4;
+            --sidebar-width: 280px;
         }
 
         * {
@@ -31,370 +28,516 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-            color: var(--text-main);
-            background-color: var(--bg-base);
-            /* 科技感网格背景 */
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.6;
+            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-deep);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* --- 顶部导航 --- */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 25%);
+        }
+        
+        .blob {
+            position: absolute;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+        }
+
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: rgba(59, 130, 246, 0.15); }
+        .blob-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: rgba(139, 92, 246, 0.15); animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: rgba(6, 182, 212, 0.1); animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 10%) scale(1.1); }
+            100% { transform: translate(-5%, -5%) scale(0.95); }
+        }
+
         header {
             position: fixed;
-            top: 0;
-            width: 100%;
-            height: 70px;
-            background: rgba(5, 5, 5, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
+            top: 0; width: 100%; height: 72px;
+            background: rgba(9, 9, 11, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 32px;
             z-index: 1000;
         }
 
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .brand-container {
+            display: flex; align-items: center; gap: 16px;
         }
 
-        .brand-logo-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: contain;
-            box-shadow: var(--glow-primary);
-            border: 1px solid var(--border-highlight);
-            background: #fff; /* 防止透明logo看不清 */
+        .brand-logo {
+            width: 42px; height: 42px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .brand-name {
-            font-size: 22px;
-            font-weight: 800;
-            background: linear-gradient(90deg, #fff, #a1a1aa);
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: 1px;
+        .brand-text {
+            font-size: 22px; font-weight: 800; letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* --- 侧边栏 --- */
-        .layout-container {
-            display: flex;
-            margin-top: 70px;
-            flex: 1;
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent-glow-1), var(--accent-glow-2));
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
         }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+
+        .layout { display: flex; margin-top: 72px; }
 
         aside {
             width: var(--sidebar-width);
-            position: fixed;
-            top: 70px;
-            bottom: 0;
-            left: 0;
-            background: var(--bg-panel);
-            border-right: 1px solid var(--border-light);
-            padding: 30px 20px;
-            overflow-y: auto;
-            z-index: 900;
+            position: fixed; top: 72px; bottom: 0; left: 0;
+            background: rgba(9, 9, 11, 0.4);
+            border-right: 1px solid var(--glass-border);
+            padding: 32px 24px;
+            overflow-y: auto; z-index: 90;
         }
 
         .nav-title {
-            font-size: 13px;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            padding-left: 10px;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 10px;
+            font-size: 12px; color: #64748b; font-weight: 700;
+            letter-spacing: 2px; margin-bottom: 24px; padding-left: 12px;
         }
 
-        .nav-list {
-            list-style: none;
-        }
-
+        .nav-item { list-style: none; margin-bottom: 8px; }
         .nav-item a {
-            display: block;
-            padding: 12px 16px;
-            color: #a1a1aa;
-            text-decoration: none;
-            font-size: 14px;
-            border-radius: 8px;
-            transition: all 0.2s;
-            margin-bottom: 4px;
+            display: block; padding: 12px 16px; color: var(--text-secondary);
+            text-decoration: none; font-size: 14px; font-weight: 500;
+            border-radius: 10px; transition: all 0.3s ease;
         }
 
-        .nav-item a:hover, .nav-item.active a {
-            color: var(--primary);
-            background: rgba(0, 240, 255, 0.1);
-            border-left: 3px solid var(--primary);
+        .nav-item a:hover {
+            color: #fff; background: rgba(255, 255, 255, 0.04);
+            transform: translateX(4px);
         }
 
-        /* --- 主内容区 --- */
+        .nav-item.active a {
+            color: #fff; background: rgba(59, 130, 246, 0.15);
+            box-shadow: inset 2px 0 0 var(--accent-glow-1);
+        }
+
         main {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 40px 60px;
-            max-width: 1000px;
+            flex: 1; margin-left: var(--sidebar-width);
+            padding: 48px 64px; max-width: 1200px;
         }
 
-        section {
-            scroll-margin-top: 100px;
-            margin-bottom: 60px;
+        .hero-section { text-align: center; margin-bottom: 64px; padding-top: 20px; }
+        .hero-section h1 {
+            font-size: 42px; font-weight: 800; margin-bottom: 16px;
+            background: linear-gradient(to right, #fff, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        h2 {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: #fff;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .hero-cta {
+            margin-top: 32px;
         }
 
-        h2::before {
-            content: '';
-            display: block;
-            width: 8px;
-            height: 24px;
-            background: var(--primary);
-            box-shadow: var(--glow-primary);
+        .hero-cta .cta-button {
+            padding: 14px 40px;
+            font-size: 16px;
         }
 
-        h3 {
-            font-size: 18px;
-            color: var(--primary);
-            margin: 24px 0 12px 0;
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 48px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out, border-color 0.3s ease;
         }
 
-        p, li {
-            color: var(--text-muted);
-            font-size: 15px;
-            margin-bottom: 12px;
+        .glass-card.visible { opacity: 1; transform: translateY(0); }
+        .glass-card:hover { border-color: rgba(255, 255, 255, 0.15); }
+
+        .card-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .step-num {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent-glow-1), var(--accent-glow-2));
+            color: #fff; font-weight: 700; font-size: 16px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
         }
 
-        strong {
-            color: #fff;
+        h2 { font-size: 24px; color: #fff; font-weight: 600; }
+        h3 { font-size: 18px; color: var(--accent-glow-3); margin: 24px 0 12px; }
+        p, li { font-size: 15px; color: var(--text-secondary); margin-bottom: 12px; }
+        
+        .highlight { color: #fff; font-weight: 600; }
+
+        .image-showcase {
+            margin: 32px 0; border-radius: 16px; padding: 12px;
+            background: rgba(0, 0, 0, 0.3); border: 1px dashed rgba(255, 255, 255, 0.15);
+            text-align: center; transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
-        /* --- 教程专属图片容器 --- */
-        .tutorial-img-wrapper {
-            background: rgba(10, 10, 15, 0.8);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0 30px 0;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: all 0.3s;
+        .image-showcase:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.4);
         }
 
-        .tutorial-img-wrapper:hover {
-            border-color: var(--border-highlight);
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.15);
-        }
-
-        /* 这里是需要您替换 Base64 的 img 标签样式 */
-        .base64-img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        .doc-img {
+            max-width: 100%; height: auto; border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            min-height: 120px; background: #121214; display: inline-block;
         }
 
         .img-caption {
-            margin-top: 15px;
-            font-size: 13px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            font-family: monospace;
+            margin-top: 16px; font-size: 13px; color: #64748b; font-family: monospace;
+            letter-spacing: 0.5px;
         }
 
-        /* --- 安全隐私卡片 --- */
-        .security-card {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(112, 0, 255, 0.05));
-            border: 1px solid var(--border-highlight);
-            border-left: 4px solid var(--primary);
+        .alert {
+            display: flex; gap: 16px; padding: 20px; border-radius: 16px; margin: 24px 0;
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.1), transparent);
+            border-left: 4px solid var(--accent-glow-1);
+        }
+
+        .alert-safe {
+            background: linear-gradient(to right, rgba(16, 185, 129, 0.1), transparent);
+            border-left-color: #10b981;
+        }
+
+        .badge {
+            display: inline-block; padding: 4px 10px; border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255,255,255,0.1);
+            font-size: 13px; color: var(--accent-glow-3); font-family: monospace;
+        }
+
+        .contact-box {
+            display: flex; align-items: center; gap: 48px; padding: 40px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.05));
+            border-radius: 24px; border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .qr-wrapper {
+            width: 160px; height: 160px; padding: 12px;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+            flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+        }
+
+        .qr-img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; }
+
+        .billing-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
             padding: 24px;
-            border-radius: 8px;
-            margin: 20px 0;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .security-card h4 {
+        .billing-card h4 {
             color: #fff;
-            font-size: 18px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 16px;
         }
 
-        .security-card p {
-            margin: 0;
-            color: #b0b8c4;
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow-x: auto;
         }
 
-        /* --- 提示标签 --- */
-        .tag {
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--primary);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            border: 1px solid rgba(0, 240, 255, 0.3);
+        .code-block code {
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+            font-size: 13px;
+            color: #a5f3fc;
+            line-height: 1.6;
         }
+
+        .code-comment {
+            color: #64748b;
+        }
+
     </style>
 </head>
 <body>
 
+    <div class="ambient-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
     <header>
-        <div class="brand">
-            <!-- 【替换点 1】：网站左上角 Logo，替换 src 内的文字 -->
-            <img class="brand-logo-img" src="此处粘贴您的Base64代码" alt="Logo">
-            <div class="brand-name">MaSiKe-ai</div>
+        <div class="brand-container">
+            <img class="brand-logo" src="【在这里粘贴图片0的Base64编码】" alt="MaSiKe-ai Logo">
+            <div class="brand-text">MaSiKe-ai</div>
         </div>
+        <button class="cta-button" onclick="window.open('https://masikeai.cc.cd/', '_blank')">立即体验</button>
     </header>
 
-    <div class="layout-container">
-        <aside id="sidebar">
-            <div class="nav-title">操作手册目录</div>
-            <ul class="nav-list">
-                <li class="nav-item active"><a href="#step1">1. 注册与登录</a></li>
-                <li class="nav-item"><a href="#step2">2. 控制台概览</a></li>
-                <li class="nav-item"><a href="#step3">3. 聊天与模型选择</a></li>
-                <li class="nav-item"><a href="#step4">4. AI 艺术绘图</a></li>
-                <li class="nav-item"><a href="#step5">5. 隐私与数据安全</a></li>
-                <li class="nav-item"><a href="#step6">6. 支付与充值流程</a></li>
-                <li class="nav-item"><a href="#step7">7. 联系我们 (群二维码)</a></li>
+    <div class="layout">
+        <aside>
+            <div class="nav-title">平台使用指南</div>
+            <ul class="nav-list" id="navList">
+                <li class="nav-item active"><a href="#start">1. 注册与控制台</a></li>
+                <li class="nav-item"><a href="#chat">2. AI 智能对话</a></li>
+                <li class="nav-item"><a href="#draw">3. AI 艺术创作</a></li>
+                <li class="nav-item"><a href="#billing">4. 充值与支付</a></li>
+                <li class="nav-item"><a href="#api">5. API 上游对接</a></li>
+                <li class="nav-item"><a href="#contact">6. 社区与支持</a></li>
             </ul>
         </aside>
 
         <main>
-            <section id="step1">
-                <h2>1. 注册与登录系统</h2>
-                <p>欢迎使用 MaSiKe-ai。为了保障您的数字资产安全，请首先完成账号的注册与登录。</p>
-                <ul>
-                    <li>访问官网首页，点击右上角的 <strong>「注册」</strong> 按钮。</li>
-                    <li>按照提示输入您的邮箱账号并设置密码。</li>
-                </ul>
-                <div class="tutorial-img-wrapper">
-                    <!-- 【替换点 2】：注册与登录界面截图 -->
-                    <img class="base64-img" src="此处粘贴您的Base64代码" alt="注册登录界面">
-                    <div class="img-caption">[ 图 1.1 - 账号注册与登录界面 ]</div>
+            <div class="hero-section">
+                <h1>开启次世代 AI 体验</h1>
+                <p>化繁为简，极速连接。MaSiKe-ai 综合开放平台全维度使用指北。</p>
+                <div class="hero-cta">
+                    <button class="cta-button" onclick="window.open('https://masikeai.cc.cd/', '_blank')">立即体验</button>
                 </div>
-            </section>
+            </div>
 
-            <section id="step2">
-                <h2>2. 进入控制台 (Dashboard)</h2>
-                <p>成功登录后，点击顶部导航栏的 <strong>「控制台」</strong>，进入您的个人专属管理中枢。</p>
-                <ul>
-                    <li>在这里，您可以直观地看到实时的 <span class="tag">可用余额</span> 与 <span class="tag">调用统计</span>，彻底告别余额焦虑。</li>
-                    <li>左侧菜单栏包含了聊天、绘图、充值等所有核心功能的入口。</li>
-                </ul>
-                <div class="tutorial-img-wrapper">
-                    <!-- 【替换点 3】：点击控制台的截图 -->
-                    <img class="base64-img" src="此处粘贴您的Base64代码" alt="控制台入口">
-                    <div class="img-caption">[ 图 2.1 - 控制台全局数据概览 ]</div>
+            <section id="start" class="glass-card fade-in">
+                <div class="card-header">
+                    <div class="step-num">1</div>
+                    <h2>系统登入与数据中枢</h2>
                 </div>
-            </section>
-
-            <section id="step3">
-                <h2>3. 文本聊天与模型选择</h2>
-                <p>如果您需要进行论文润色、代码编写或日常问答，请在左侧菜单点击 <strong>「聊天」</strong> 进入对话界面。</p>
-                <h3>选择模型算法</h3>
-                <p>点击界面左上角的模型下拉菜单，您可以自由切换当前对话使用的底层算力。我们提供多种最新模型以满足不同需求：</p>
-                <ul>
-                    <li>支持目前最前沿的 <strong>GPT-5.6系列、GPT-4o、Claude 3.5 Sonnet</strong>。</li>
-                    <li>若追求性价比，也可选择 <strong>GPT-5.4、GPT-5.5</strong> 等费率更优惠的经典模型。</li>
-                </ul>
-                <div class="tutorial-img-wrapper">
-                    <!-- 【替换点 4】：聊天界面与模型选择下拉框截图 -->
-                    <img class="base64-img" src="此处粘贴您的Base64代码" alt="模型选择界面">
-                    <div class="img-caption">[ 图 3.1 - 文本聊天终端与下拉模型矩阵选择 ]</div>
-                </div>
-            </section>
-
-            <section id="step4">
-                <h2>4. AI 艺术绘图</h2>
-                <p>若您需要进行科研绘图、平面设计、UI 灵感生成，请点击左侧的 <strong>「绘图」</strong> 按钮进入视觉生成终端。</p>
-                <ul>
-                    <li>我们接入了当前最先进的图像生成模型（如 <strong>image-2</strong>），成图质量极高。</li>
-                    <li>平均每张高清图仅花费约 0.3-0.4 元，极具性价比。</li>
-                </ul>
-                <div class="tutorial-img-wrapper">
-                    <!-- 【替换点 5】：绘图功能主界面截图 -->
-                    <img class="base64-img" src="此处粘贴您的Base64代码" alt="绘图主界面">
-                    <div class="img-caption">[ 图 4.1 - AI 绘图指令输入界面 ]</div>
-                </div>
-                <h3>自定义尺寸与画质标准</h3>
-                <p>在绘图界面右上角，您可以精准控制输出图像的规格，包括分辨率（如 1024x1024）以及生成质量（Standard/HD）。</p>
-                <div class="tutorial-img-wrapper">
-                    <!-- 【替换点 6】：绘图尺寸与标准选择截图 -->
-                    <img class="base64-img" src="此处粘贴您的Base64代码" alt="尺寸与标准设置">
-                    <div class="img-caption">[ 图 4.2 - 自定义图像尺寸与画质标准 ]</div>
-                </div>
-            </section>
-
-            <section id="step5">
-                <h2>5. 用户独立安全性 (消除顾虑)</h2>
-                <p>在 MaSiKe-ai，您的数据隐私是我们的最高准则。我们采用物理级+逻辑级双重隔离机制：</p>
+                <p>首先，进行 <span class="highlight">注册登录</span>。告别繁琐验证，秒级进入系统。</p>
                 
-                <div class="security-card">
-                    <h4>🔒 100% 对话隐私隔离</h4>
-                    <p>每个用户的对话线程和 API 密钥都是完全独立的。系统后台强制执行阅后即焚策略，<strong>您看不见其他人的聊天内容，别人（包括平台管理员）也绝对无法查看您的历史数据与核心机密。</strong> 请放心用于科研数据处理与企业级商业开发。</p>
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片1的Base64编码】" alt="注册登录界面">
+                    <div class="img-caption">[ 图 1. 注册登录界面 ]</div>
                 </div>
-            </section>
 
-            <section id="step6">
-                <h2>6. 支付与充值流程</h2>
-                <p>为了满足不同使用频次的用户，平台提供两种高度灵活的充值方式：</p>
-                <h3>方式一：订阅充值固定套餐</h3>
-                <p>适合日常对话较多的用户，一次购买，周期内享有固定配额，网页端直接免密调用，省心省力。</p>
-                <h3>方式二：余额直充 (按量计费 & 倍率分组)</h3>
-                <p>极客与开发者的首选。将资金充入账户余额，用多少扣多少。在创建 Token 令牌时，您可以根据项目需求选择不同的<strong>底层模型分组</strong>，享受不同的计费倍率：</p>
-                <ul>
-                    <li><strong>特惠测试组：</strong> 低倍率，适合高频大批量基础文本任务。</li>
-                    <li><strong>标准商用组：</strong> 1:1 官方倍率，保障响应速度与稳定性。</li>
-                </ul>
-                <div class="tutorial-img-wrapper">
-                    <!-- 【替换点 7】：支付与充值界面截图 -->
-                    <img class="base64-img" src="此处粘贴您的Base64代码" alt="充值界面">
-                    <div class="img-caption">[ 图 6.1 - 灵活的支付充值与套餐选择面板 ]</div>
+                <p>登录后，点击顶部导航栏的 <span class="highlight">控制台</span>，进入您的个人专属管理中枢。</p>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片2的Base64编码】" alt="首页控制台入口">
+                    <div class="img-caption">[ 图 2. 首页导航控制台入口 ]</div>
                 </div>
-            </section>
 
-            <section id="step7">
-                <h2>7. 获取支持 (联系客服)</h2>
-                <p>如果您在使用过程中遇到任何对接、扣费或模型报错问题，我们的极客运维团队随时待命。</p>
-                <p>请扫描下方二维码加入我们的官方微信交流群。除了技术支持，群内还会不定期发放充值返利福利与最新模型内测资格。</p>
+                <div class="alert alert-safe">
+                    <div>
+                        <strong style="color: #10b981; display: block; margin-bottom: 4px;">独立隐私空间</strong>
+                        每个人的聊天对话都是独立的，用户放心使用，你看不见别人的聊天内容，别人也看不见你的内容。
+                    </div>
+                </div>
                 
-                <div class="tutorial-img-wrapper" style="max-width: 300px; margin: 20px 0;">
-                    <!-- 【替换点 8】：微信群二维码截图 -->
-                    <img class="base64-img" src="此处粘贴您的Base64代码" alt="微信交流群二维码">
-                    <div class="img-caption">[ 图 7.1 - 扫码加入官方交流群 ]</div>
+                <p>在控制台内，有实时的余额显示，不再余额焦虑。左侧菜单栏包含了聊天、绘图、充值等所有核心功能的入口。</p>
+                
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片3的Base64编码】" alt="控制台全局与聊天入口">
+                    <div class="img-caption">[ 图 3. 全局数据面板与功能入口 ]</div>
                 </div>
             </section>
 
+            <section id="chat" class="glass-card fade-in">
+                <div class="card-header">
+                    <div class="step-num">2</div>
+                    <h2>前沿语言模型矩阵</h2>
+                </div>
+                <p>如果您想用 ChatGPT 聊天、科研、绘图，请点击左侧菜单的 <span class="highlight">聊天</span> 进入页面。</p>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片4的Base64编码】" alt="文本模型选择菜单">
+                    <div class="img-caption">[ 图 4. 模型引擎切换面板 ]</div>
+                </div>
+
+                <p>进入聊天页面后，您可以选择不同的文本模型进行对话。</p>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片8的Base64编码】" alt="聊天模型选择">
+                    <div class="img-caption">[ 图 5. 聊天模型选择界面 ]</div>
+                </div>
+
+                <h3>核心模型支持</h3>
+                <ul>
+                    <li>我们支持最新的 <span class="badge">5.6系列</span> 大模型。</li>
+                    <li>同时支持 <span class="badge">5.4</span>、<span class="badge">5.5</span> 相对价格更优惠一些的模型。</li>
+                    <li>完美适配代码编写、长文本处理与复杂逻辑推理任务。</li>
+                </ul>
+            </section>
+
+            <section id="draw" class="glass-card fade-in">
+                <div class="card-header">
+                    <div class="step-num">3</div>
+                    <h2>AI 视觉艺术创作</h2>
+                </div>
+                <p>如果你需要科研绘图，做设计等等绘图的任务，请点击右侧的 <span class="highlight">绘图</span>。</p>
+                
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片5的Base64编码】" alt="绘图功能主界面">
+                    <div class="img-caption">[ 图 6. AI 艺术创作核心面板 ]</div>
+                </div>
+
+                <p>里面有 OpenAI 目前最先进的绘图模型 <span class="badge">image-2</span>，绘图平均每张图花费 0.3-0.4 元，适合做平面设计或者科研工作者。</p>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片6的Base64编码】" alt="画幅比例选择">
+                    <div class="img-caption">[ 图 7. 自定义生成画幅比例 ]</div>
+                </div>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片7的Base64编码】" alt="画质标准配置">
+                    <div class="img-caption">[ 图 8. 画质输出标准切换 ]</div>
+                </div>
+
+                <p>系统全面支持选择图右上角支持选择图片尺寸和标准，为你提供专业级的图像输出管理。</p>
+            </section>
+
+            <section id="billing" class="glass-card fade-in">
+                <div class="card-header">
+                    <div class="step-num">4</div>
+                    <h2>算力充能与双轨计费</h2>
+                </div>
+                <p>平台提供两种高度灵活的充值方式，满足不同使用频次用户的需求。</p>
+
+                <div class="billing-card">
+                    <h4>💳 方式一：余额直充（按量计费）</h4>
+                    <p>将资金直接充入账户余额，用多少扣多少，灵活方便。适合重度开发用户或使用量不稳定的场景，资金不会浪费，按需消费。</p>
+                </div>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片9的Base64编码】" alt="额度充值界面">
+                    <div class="img-caption">[ 图 9. 余额充值与额度管理 ]</div>
+                </div>
+
+                <div class="billing-card">
+                    <h4>📦 方式二：订阅套餐（固定周期）</h4>
+                    <p>选择包月或包年订阅套餐，周期内享有固定配额，网页端直接免密调用，省心省力。适合日常对话较多的用户，享受更优惠的单价。</p>
+                </div>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片11的Base64编码】" alt="订阅套餐界面">
+                    <div class="img-caption">[ 图 10. 订阅套餐选择 ]</div>
+                </div>
+
+                <div class="billing-card">
+                    <h4>🎁 方式三：兑换码充值</h4>
+                    <p>如果您获得了工作人员发放的充值兑换码，可以在这里兑换对应的套餐或余额。输入兑换码即可立即获得相应的额度或服务。</p>
+                </div>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片10的Base64编码】" alt="兑换码充值界面">
+                    <div class="img-caption">[ 图 11. 兑换码充值 ]</div>
+                </div>
+
+                <h3>多重倍率分组</h3>
+                <p>在生成调用令牌（Token）时，可自由切换底层节点池，满足多场景成本控制需求：特惠折扣池、标准商用池、高并发企业专线。</p>
+            </section>
+
+            <section id="api" class="glass-card fade-in">
+                <div class="card-header">
+                    <div class="step-num">5</div>
+                    <h2>API 上游对接</h2>
+                </div>
+                <p>平台原生兼容主流开发生态（如 NewAPI、NextChat、Codex 等智能体）。通过简单的配置即可接入支持 API 的各类智能体。</p>
+
+                <div class="image-showcase">
+                    <img class="doc-img" src="【在这里粘贴图片13的Base64编码】" alt="渠道对接配置">
+                    <div class="img-caption">[ 图 12. 渠道对接配置界面 ]</div>
+                </div>
+
+                <h3>接入配置方法</h3>
+                <p>接入支持 API 的智能体只需以下简单步骤：</p>
+                <ol>
+                    <li>在 <span class="highlight">令牌管理</span> 中创建一个密钥</li>
+                    <li>选择一个合适的 <span class="highlight">分组</span></li>
+                    <li>在智能体配置中填入以下信息</li>
+                </ol>
+
+                <div class="code-block">
+                    <code><span class="code-comment">// Base URL（统一使用我们的官网地址）</span><br>
+base_url: "https://masikeai.cc.cd"<br><br>
+<span class="code-comment">// API Key（在令牌管理中创建）</span><br>
+api_key: "sk-your-token-here"<br><br>
+<span class="code-comment">// 分组选择（根据需求选择）</span><br>
+group: "standard" <span class="code-comment">// 或 "premium", "enterprise"</span></code>
+                </div>
+
+                <p>配置完成后，即可在您的智能体中享受 MaSiKe-ai 的所有模型服务！</p>
+
+                <h3>支持的智能体与框架</h3>
+                <ul>
+                    <li><span class="badge">Codex</span> - AI 代码助手框架</li>
+                    <li><span class="badge">NewAPI</span> - 聚合 API 网关</li>
+                    <li><span class="badge">NextChat</span> - 跨平台聊天客户端</li>
+                    <li><span class="badge">LangChain</span> - LLM 应用开发框架</li>
+                    <li><span class="badge">Flowise</span> - 可视化 AI 工作流构建器</li>
+                </ul>
+
+                <h3>私有化部署 (LangBot)</h3>
+                <p>若您需要一键搭建个人专属 AI 站点，可利用平台提供的 Docker 镜像一键运行私有服务器。</p>
+            </section>
+
+            <section id="contact" class="glass-card fade-in">
+                <div class="card-header">
+                    <div class="step-num">6</div>
+                    <h2>技术前线与社群支持</h2>
+                </div>
+                
+                <div class="contact-box">
+                    <div class="qr-wrapper">
+                        <img class="qr-img" src="【在这里粘贴图片12的Base64编码】" alt="官方交流群二维码">
+                    </div>
+                    <div>
+                        <h3 style="margin-top: 0; color: #fff;">加入核心极客圈</h3>
+                        <p>无论是 API 调试异常、额度疑问，还是探讨最前沿的 Prompt 技巧，欢迎扫码加入官方服务群。</p>
+                        <ul style="margin-top: 16px;">
+                            <li>💰 及时掌握平台优惠政策与返利活动</li>
+                            <li>🛠️ 技术远程服务快速响应，7x12 小时技术值班</li>
+                            <li>🤝 商务对接与合作洽谈，共建生态</li>
+                            <li>🚀 第一时间获取大模型升级资讯</li>
+                            <li>🎁 参与不定期群友专属福利掉落</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
     <script>
-        // 侧边栏高亮联动逻辑
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(card => {
+            observer.observe(card);
+        });
+
         const sections = document.querySelectorAll('section');
-        const navItems = document.querySelectorAll('.nav-item');
+        const navLinks = document.querySelectorAll('.nav-item');
 
         window.addEventListener('scroll', () => {
             let current = '';
@@ -405,10 +548,10 @@
                 }
             });
 
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.querySelector('a').getAttribute('href').substring(1) === current) {
-                    item.classList.add('active');
+            navLinks.forEach(li => {
+                li.classList.remove('active');
+                if (li.querySelector('a').getAttribute('href').substring(1) === current) {
+                    li.classList.add('active');
                 }
             });
         });
